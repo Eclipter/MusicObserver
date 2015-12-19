@@ -99,21 +99,13 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
 
         } else if (id == R.id.nav_songs) {
-            /*Fragment fragment = new PlanetFragment();
-            Bundle args = new Bundle();
-            args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-            fragment.setArguments(args);*/
 
-            /*Fragment fragment = new MusicFragment();
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.content_frame, fragment);
-            transaction.commit();*/
         } else if (id == R.id.nav_artists) {
             Intent intent = new Intent(MainActivity.this, ArtistList.class);
             startActivity(intent);
         } else if (id == R.id.nav_albums) {
-
+            Intent intent = new Intent(MainActivity.this, AlbumsList.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         }

@@ -8,15 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import de.umass.lastfm.Artist;
+
 /**
  * Created by USER on 07.12.2015.
  */
-public class AdapterItem extends ArrayAdapter<String> {
+public class ArtistListAdapter extends ArrayAdapter<String> {
 
     Context context;
     private final String[] values;
 
-    public AdapterItem(Context context, String[] values) {
+    public ArtistListAdapter(Context context, String[] values) {
         super(context, R.layout.list_view_artist, values);
         this.context = context;
         this.values = values;
@@ -28,7 +30,11 @@ public class AdapterItem extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.list_view_artist, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.textViewItem);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imageViewItem);
-        textView.setText(values[position]);
+
+        String value = values[position];
+
+
+        textView.setText(value);
         //imageView.setBackgroundResource(R.drawable.abyssal_blade_lg);
 
         return rowView;
