@@ -1,30 +1,27 @@
 package by.bsu.dektiarev.myapplication;
 
 
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
-
-
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import by.bsu.dektiarev.myapplication.asynctasks.ArtistGetter;
+import by.bsu.dektiarev.myapplication.fragments.AlbumsFragment;
+import by.bsu.dektiarev.myapplication.fragments.TestFragment;
+import by.bsu.dektiarev.myapplication.imageloader.ImageLoader;
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.ImageSize;
 
 public class ArtistTabbedBrowser extends AppCompatActivity {
 
@@ -32,6 +29,9 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private ViewPager viewPager;
+    private ImageView artistImage;
+
+    String artistName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +42,55 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        artistImage = (ImageView) findViewById(R.id.artistImage);
+
+        Bundle bundle = getIntent().getExtras();
+        artistName = bundle.getString("artist");
+
+
+        ArtistGetter artistGetter = (ArtistGetter) new ArtistGetter().execute(artistName);
+        Artist artist = null;
+        try {
+            artist = artistGetter.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if(artist != null) {
+
+            String imageUrl = artist.getImageURL(ImageSize.HUGE);
+            ImageLoader imageLoader = new ImageLoader(getApplicationContext());
+            imageLoader.DisplayImage(imageUrl, R.drawable.loader, artistImage);
+
+            artistName =  artist.getName();
+            getSupportActionBar().setTitle(artistName);
+
+        }
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TestFragment(), "ALBUMS");
-        adapter.addFrag(new AlbumsFragment(), "SINGLES");
-        adapter.addFrag(new TestFragment(), "VIDEOS");
-        adapter.addFrag(new TestFragment(), "REWARDS");
+        Bundle bundle = new Bundle();
+        bundle.putString("artist", artistName);
+
+        AlbumsFragment albumsFragment = new AlbumsFragment();
+        TestFragment testFragment = new TestFragment();
+
+        albumsFragment.setArguments(bundle);
+        testFragment.setArguments(bundle);
+
+        adapter.addFrag(testFragment, "INFO");
+        adapter.addFrag(albumsFragment, "ALBUMS");
+        adapter.addFrag(testFragment, "EVENTS");
+        adapter.addFrag(testFragment, "SIMILAR");
         viewPager.setAdapter(adapter);
     }
 

@@ -13,14 +13,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            <!--app:layout_scrollFlags="scroll|enterAlways"-->
+
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/artistImage"
-            android:background="@drawable/muse"
             android:layout_gravity="center"
             android:layout_margin="10dp"/>
 

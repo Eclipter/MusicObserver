@@ -1,4 +1,4 @@
-package by.bsu.dektiarev.myapplication;
+package by.bsu.dektiarev.myapplication.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import by.bsu.dektiarev.myapplication.R;
 
 
 public class TestFragment extends Fragment {

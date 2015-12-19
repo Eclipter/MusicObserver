@@ -44,7 +44,7 @@ public class ArtistList extends AppCompatActivity {
             cursor.close();
         }
 
-        String[] values = new String[artists.size()];
+        final String[] values = new String[artists.size()];
         artists.toArray(values);
         ArtistListAdapter adapter = new ArtistListAdapter(this.getApplicationContext(), values);
         artistList.setAdapter(adapter);
@@ -53,6 +53,9 @@ public class ArtistList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ArtistList.this, ArtistTabbedBrowser.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("artist", values[position]);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
