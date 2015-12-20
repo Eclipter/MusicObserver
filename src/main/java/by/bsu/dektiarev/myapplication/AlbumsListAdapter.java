@@ -58,9 +58,6 @@ public class AlbumsListAdapter extends ArrayAdapter<String> {
             imageView.setMinimumHeight(400);
             imageView.setMinimumWidth(400);
 
-            /*ImageLoader imageLoader = new ImageLoader(myContext);
-            imageLoader.DisplayImage(imageUrl, R.drawable.loader, imageView);*/
-
             ImageLoader imageLoader = AppController.getInstance().getImageLoader();
             imageView.setImageUrl(imageUrl, imageLoader);
 
