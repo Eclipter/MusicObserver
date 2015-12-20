@@ -19,7 +19,9 @@ public class ArtistGetter extends AsyncTask<String, Void, Artist> {
             List<Artist> searchRes = (List<Artist>) Artist.search(params[0], "a578c2ba64a884d469f7478117dfaae6");
 
             if(searchRes.size() != 0) {
-                return searchRes.get(0);
+                Artist artist = searchRes.get(0);
+                Artist detailedArtist = Artist.getInfo(artist.getMbid(), "a578c2ba64a884d469f7478117dfaae6");
+                return detailedArtist;
             }
             else return null;
         }

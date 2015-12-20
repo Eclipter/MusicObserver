@@ -1,10 +1,6 @@
 package by.bsu.dektiarev.myapplication;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,31 +8,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import by.bsu.dektiarev.myapplication.asynctasks.AlbumGetter;
 import by.bsu.dektiarev.myapplication.asynctasks.ArtistGetter;
-import by.bsu.dektiarev.myapplication.imageloader.DownloadImageTask;
 import by.bsu.dektiarev.myapplication.imageloader.ImageLoader;
+import de.umass.lastfm.Album;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.ImageSize;
 
 /**
- * Created by USER on 07.12.2015.
+ * Created by USER on 20.12.2015.
  */
-public class ArtistListAdapter extends ArrayAdapter<String> {
+public class AlbumsListAdapter extends ArrayAdapter<String> {
 
     Context context;
     private final String[] values;
 
-    public ArtistListAdapter(Context context, String[] values) {
-        super(context, R.layout.list_view_artist, values);
+    public AlbumsListAdapter(Context context, String[] values) {
+        super(context, R.layout.list_view_album, values);
         this.context = context;
         this.values = values;
     }
@@ -46,22 +36,22 @@ public class ArtistListAdapter extends ArrayAdapter<String> {
         Context myContext = parent.getContext();
 
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.list_view_artist, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.textViewArtistItem);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageViewArtistItem);
+        View rowView = inflater.inflate(R.layout.list_view_album, parent, false);
+        TextView textView = (TextView) rowView.findViewById(R.id.textViewAlbumItem);
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageViewAlbumItem);
 
         String value = values[position];
 
-        ArtistGetter artistGetter = (ArtistGetter) new ArtistGetter().execute(value);
-        Artist artist = null;
+        AlbumGetter albumGetter = (AlbumGetter) new AlbumGetter().execute(value);
+        Album album = null;
         try {
-            artist = artistGetter.get();
+            album = albumGetter.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        if(artist != null) {
-            String imageUrl = artist.getImageURL(ImageSize.EXTRALARGE);
+        if(album != null) {
+            String imageUrl = album.getImageURL(ImageSize.EXTRALARGE);
 
             imageView.setMinimumHeight(400);
             imageView.setMinimumWidth(400);

@@ -18,6 +18,8 @@ import java.util.concurrent.ExecutionException;
 
 import by.bsu.dektiarev.myapplication.asynctasks.ArtistGetter;
 import by.bsu.dektiarev.myapplication.fragments.AlbumsFragment;
+import by.bsu.dektiarev.myapplication.fragments.EventFragment;
+import by.bsu.dektiarev.myapplication.fragments.InfoFragment;
 import by.bsu.dektiarev.myapplication.fragments.TestFragment;
 import by.bsu.dektiarev.myapplication.imageloader.ImageLoader;
 import de.umass.lastfm.Artist;
@@ -31,6 +33,7 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
     private ViewPager viewPager;
     private ImageView artistImage;
 
+    Artist artist;
     String artistName;
 
     @Override
@@ -49,7 +52,7 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
 
 
         ArtistGetter artistGetter = (ArtistGetter) new ArtistGetter().execute(artistName);
-        Artist artist = null;
+        artist = null;
         try {
             artist = artistGetter.get();
         } catch (InterruptedException | ExecutionException e) {
@@ -58,13 +61,12 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
 
         if(artist != null) {
 
-            String imageUrl = artist.getImageURL(ImageSize.HUGE);
+            String imageUrl = artist.getImageURL(ImageSize.EXTRALARGE);
             ImageLoader imageLoader = new ImageLoader(getApplicationContext());
             imageLoader.DisplayImage(imageUrl, R.drawable.loader, artistImage);
 
             artistName =  artist.getName();
             getSupportActionBar().setTitle(artistName);
-
         }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -81,16 +83,17 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("artist", artistName);
 
+        InfoFragment infoFragment = InfoFragment.newInstance(artistName);
+
         AlbumsFragment albumsFragment = new AlbumsFragment();
-        TestFragment testFragment = new TestFragment();
-
         albumsFragment.setArguments(bundle);
-        testFragment.setArguments(bundle);
 
-        adapter.addFrag(testFragment, "INFO");
+        EventFragment eventFragment = EventFragment.newInstance(artist.getMbid());
+
+        adapter.addFrag(infoFragment, "INFO");
         adapter.addFrag(albumsFragment, "ALBUMS");
-        adapter.addFrag(testFragment, "EVENTS");
-        adapter.addFrag(testFragment, "SIMILAR");
+        adapter.addFrag(eventFragment, "EVENTS");
+        adapter.addFrag(new TestFragment(), "SIMILAR");
         viewPager.setAdapter(adapter);
     }
 

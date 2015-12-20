@@ -11,7 +11,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class AlbumsList extends AppCompatActivity {
@@ -23,9 +27,9 @@ public class AlbumsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums_list);
 
-        albumList = (ListView) findViewById(R.id.listArtistViewItem);
+        albumList = (ListView) findViewById(R.id.listAlbumViewItem);
 
-        Set<String> artists = new LinkedHashSet<>();
+        Map<String, String> albumInfo = new LinkedHashMap<>();
 
         ContentResolver contentResolver = this.getContentResolver();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -35,24 +39,32 @@ public class AlbumsList extends AppCompatActivity {
 
         if(cursor != null && cursor.moveToFirst()) {
 
-            int artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+            int albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+            int artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
             do {
-                String data = cursor.getString(artistColumn);
-                artists.add(data);
+                String album = cursor.getString(albumColumn);
+                String artist = cursor.getString(artistColumn);
+                albumInfo.put(album, artist);
             } while(cursor.moveToNext());
 
             cursor.close();
         }
 
-        String[] values = new String[artists.size()];
-        artists.toArray(values);
-        ArtistListAdapter adapter = new ArtistListAdapter(this.getApplicationContext(), values);
+        //String[] values = new String[albumInfo.size()];
+        String[] albums = new String[albumInfo.size()];
+        albumInfo.keySet().toArray(albums);
+        final String[] artists = new String[albumInfo.size()];
+        albumInfo.values().toArray(artists);
+        AlbumsListAdapter adapter = new AlbumsListAdapter(this.getApplicationContext(), albums);
         albumList.setAdapter(adapter);
 
         albumList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AlbumsList.this, ArtistTabbedBrowser.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("artist", artists[position]);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

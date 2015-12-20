@@ -11,8 +11,8 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/newtoolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
             <!--app:layout_scrollFlags="scroll|enterAlways"-->
 
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="fixed"
-            android:background="@color/colorPrimaryDark" />
+            android:background="@color/colorPrimary" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
