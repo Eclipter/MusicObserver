@@ -1,10 +1,6 @@
 package by.bsu.dektiarev.myapplication;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import by.bsu.dektiarev.myapplication.asynctasks.ArtistGetter;
-import by.bsu.dektiarev.myapplication.imageloader.DownloadImageTask;
-import by.bsu.dektiarev.myapplication.imageloader.ImageLoader;
+import by.bsu.dektiarev.myapplication.imageloader.AppController;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.ImageSize;
 
@@ -44,11 +36,12 @@ public class ArtistListAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Context myContext = parent.getContext();
+        context = myContext;
 
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_view_artist, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.textViewArtistItem);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageViewArtistItem);
+        NetworkImageView imageView = (NetworkImageView) rowView.findViewById(R.id.imageViewArtistItem);
 
         String value = values[position];
 
@@ -66,10 +59,11 @@ public class ArtistListAdapter extends ArrayAdapter<String> {
             imageView.setMinimumHeight(400);
             imageView.setMinimumWidth(400);
 
-            ImageLoader imageLoader = new ImageLoader(myContext);
-            imageLoader.DisplayImage(imageUrl, R.drawable.loader, imageView);
+            /*ImageLoader imageLoader = new ImageLoader(myContext);
+            imageLoader.DisplayImage(imageUrl, R.drawable.loader, imageView);*/
 
-            //Picasso.with(myContext).load(imageUrl).into(imageView);
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            imageView.setImageUrl(imageUrl, imageLoader);
 
         }
 

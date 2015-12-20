@@ -12,6 +12,10 @@ import android.support.v7.widget.Toolbar;
 
 import android.widget.ImageView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -21,7 +25,7 @@ import by.bsu.dektiarev.myapplication.fragments.AlbumsFragment;
 import by.bsu.dektiarev.myapplication.fragments.EventFragment;
 import by.bsu.dektiarev.myapplication.fragments.InfoFragment;
 import by.bsu.dektiarev.myapplication.fragments.TestFragment;
-import by.bsu.dektiarev.myapplication.imageloader.ImageLoader;
+import by.bsu.dektiarev.myapplication.imageloader.AppController;
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.ImageSize;
 
@@ -31,7 +35,7 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private ViewPager viewPager;
-    private ImageView artistImage;
+    private NetworkImageView artistImage;
 
     Artist artist;
     String artistName;
@@ -45,13 +49,13 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        artistImage = (ImageView) findViewById(R.id.artistImage);
+        artistImage = (NetworkImageView) findViewById(R.id.artistImage);
 
         Bundle bundle = getIntent().getExtras();
         artistName = bundle.getString("artist");
 
 
-        ArtistGetter artistGetter = (ArtistGetter) new ArtistGetter().execute(artistName);
+        final ArtistGetter artistGetter = (ArtistGetter) new ArtistGetter().execute(artistName);
         artist = null;
         try {
             artist = artistGetter.get();
@@ -62,8 +66,12 @@ public class ArtistTabbedBrowser extends AppCompatActivity {
         if(artist != null) {
 
             String imageUrl = artist.getImageURL(ImageSize.EXTRALARGE);
-            ImageLoader imageLoader = new ImageLoader(getApplicationContext());
-            imageLoader.DisplayImage(imageUrl, R.drawable.loader, artistImage);
+
+            artistImage.setMinimumHeight(400);
+            artistImage.setMinimumWidth(400);
+
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            artistImage.setImageUrl(imageUrl, imageLoader);
 
             artistName =  artist.getName();
             getSupportActionBar().setTitle(artistName);

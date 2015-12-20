@@ -1,8 +1,6 @@
 package by.bsu.dektiarev.myapplication.fragments;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,10 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 import by.bsu.dektiarev.myapplication.R;
 import by.bsu.dektiarev.myapplication.asynctasks.TopAlbumsGetter;
-import by.bsu.dektiarev.myapplication.imageloader.ImageLoader;
 import de.umass.lastfm.Album;
-import de.umass.lastfm.Artist;
-import de.umass.lastfm.ImageSize;
 
 public class AlbumsFragment extends Fragment {
 

@@ -8,13 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.concurrent.ExecutionException;
 
 import by.bsu.dektiarev.myapplication.asynctasks.AlbumGetter;
-import by.bsu.dektiarev.myapplication.asynctasks.ArtistGetter;
-import by.bsu.dektiarev.myapplication.imageloader.ImageLoader;
+import by.bsu.dektiarev.myapplication.imageloader.AppController;
 import de.umass.lastfm.Album;
-import de.umass.lastfm.Artist;
 import de.umass.lastfm.ImageSize;
 
 /**
@@ -38,7 +40,7 @@ public class AlbumsListAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_view_album, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.textViewAlbumItem);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageViewAlbumItem);
+        NetworkImageView imageView = (NetworkImageView) rowView.findViewById(R.id.imageViewAlbumItem);
 
         String value = values[position];
 
@@ -56,10 +58,11 @@ public class AlbumsListAdapter extends ArrayAdapter<String> {
             imageView.setMinimumHeight(400);
             imageView.setMinimumWidth(400);
 
-            ImageLoader imageLoader = new ImageLoader(myContext);
-            imageLoader.DisplayImage(imageUrl, R.drawable.loader, imageView);
+            /*ImageLoader imageLoader = new ImageLoader(myContext);
+            imageLoader.DisplayImage(imageUrl, R.drawable.loader, imageView);*/
 
-            //Picasso.with(myContext).load(imageUrl).into(imageView);
+            ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+            imageView.setImageUrl(imageUrl, imageLoader);
 
         }
 
