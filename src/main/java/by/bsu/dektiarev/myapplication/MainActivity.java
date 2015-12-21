@@ -131,7 +131,16 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, AlbumsList.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, "Hi! Check out the app 'Music Observer' on Google Play!" +
+                    " It's awesome!");
+            try {
+                startActivity(Intent.createChooser(intent, "Promote this app..."));
+            }
+            catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(this, "No mechanisms for sharing.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

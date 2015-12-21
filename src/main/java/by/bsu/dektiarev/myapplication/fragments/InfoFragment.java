@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.concurrent.ExecutionException;
 
 import by.bsu.dektiarev.myapplication.R;

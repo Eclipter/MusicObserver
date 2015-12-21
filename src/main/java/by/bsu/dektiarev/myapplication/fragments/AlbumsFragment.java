@@ -51,7 +51,7 @@ public class AlbumsFragment extends Fragment {
                 datum.put("date", releaseDate.toString());
             }
             else {
-                datum.put("date", "Unknown");
+                datum.put("date", "");
             }
             albums.add(datum);
         }

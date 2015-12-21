@@ -16,6 +16,6 @@
         android:text="Medium Text"
         android:id="@+id/textViewArtistItem"
         android:textSize="20sp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/primary_text"
         android:layout_gravity="center"/>
 </LinearLayout>

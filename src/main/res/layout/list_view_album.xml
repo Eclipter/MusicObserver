@@ -4,8 +4,8 @@
     android:layout_height="match_parent">
 
     <com.android.volley.toolbox.NetworkImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/imageViewAlbumItem"
         android:layout_gravity="center"
         android:layout_margin="10dp"/>
@@ -16,6 +16,6 @@
         android:text="Medium Text"
         android:id="@+id/textViewAlbumItem"
         android:textSize="20sp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/primary_text"
         android:layout_gravity="center"/>
 </LinearLayout>
