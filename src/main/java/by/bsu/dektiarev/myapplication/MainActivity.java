@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.design.widget.NavigationView;
@@ -49,28 +50,21 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if(isInternetAvailable()) {
-            Toast.makeText(MainActivity.this, "Check internet connection!", Toast.LENGTH_SHORT).show();
+        if(!isNetworkAvailable(this)) {
+            Toast.makeText(MainActivity.this, "Check internet connection!", Toast.LENGTH_LONG).show();
         }
 
         NetworkImageView imageView = (NetworkImageView) findViewById(R.id.imageView2);
         String imageUrl = "https://lh3.googleusercontent.com/-r-NV4YMr0Gc/AAAAAAAAAAI/AAAAAAAAJlk/Z_n0PdPIDP8/s0-c-k-no-ns/photo.jpg";
-
-        /*ImageLoader imageLoader = new ImageLoader(getApplicationContext());
-        imageLoader.DisplayImage(imageUrl, R.drawable.loader, imageView);*/
 
         AppController appController = AppController.getInstance();
         ImageLoader imageLoader = appController.getImageLoader();
         imageView.setImageUrl(imageUrl, imageLoader);
     }
 
-    public boolean isInternetAvailable() {
-        try {
-            InetAddress ipAddr = InetAddress.getByName("google.com");
-            return !ipAddr.equals("");
-        } catch (Exception e) {
-            return false;
-        }
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
     @Override
